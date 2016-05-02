@@ -6,11 +6,11 @@
  *
  * LICENSE: 
  *	
- * @package	DDNSUpdater
- * @author 	David Regimbal <david@regimbal.me>
+ * @package	    DDNSUpdater
+ * @author 	    David Regimbal <david@regimbal.me>
  * @copyright 	2016 David Regimbal
  * @version 	0.0.1
- * @link	http://github.com/regimbal93
+ * @link	    http://github.com/regimbal93
  *
  */
 
