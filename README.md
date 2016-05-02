@@ -11,4 +11,4 @@ $ php update.php
 ```
 License
 ----
-MIT
+GNU GENERAL PUBLIC LICENSE
