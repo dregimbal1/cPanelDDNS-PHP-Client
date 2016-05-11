@@ -25,7 +25,7 @@ $config = array(
 		'settings' => array(
 			'domain'	=> '',								# the record's domain.
 			'name'		=> '',								# subdomain if applicable
-			'ttl'			=> '',								# the record's time to live, in seconds.
+			'ttl'			=> '1440',						# the record's time to live, in seconds.
 			'type'		=> 'A'								# 'A' Record
 		),
 );

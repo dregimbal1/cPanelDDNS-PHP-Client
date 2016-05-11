@@ -14,6 +14,10 @@
  *
  */
 
+// Change to your timezone
+// A list can be found @ http://php.net/manual/en/timezones.php
+date_default_timezone_set('America/New_York');
+
 class DDNSUpdater
 {
 	private $lastSubmittedIP = "";
@@ -32,6 +36,7 @@ class DDNSUpdater
 		$this->cpanel = new xmlapi($config['cpanel']['host']);
 		$this->cpanel->password_auth($config['cpanel']['user'],$config['cpanel']['password']);
 		$this->cpanel->set_port($config['cpanel']['port']);
+		$this->cpanel->set_debug('0');
 		
 		// LocalStorage Service
 		$this->lastSubmittedIP = trim(file_get_contents($this->database)); 
@@ -51,30 +56,33 @@ class DDNSUpdater
 	private function removeARecord($ip)
 	{
 		// First get our zones
-		$zones = $this->cpanel->api2_query($this->config['cpanel']['account'],'ZoneEdit', 'fetchzones')->data->zones->{'regimbal.me'};
-
-		$this->logging($zones);
+		$zones = $this->cpanel->api2_query($this->config['cpanel']['account'],'ZoneEdit', 'fetchzones')->data->zones->{$this->config['settings']['domain']};
 		
-		// Go line by line looking for our IP
+		$this->logging('Removing record with IP: ' . $ip);
+		
+		// Go line e by line looking for our IP
+		$i;
 		foreach ( $zones as $line => $zone )
 		{
+			$i++;	
 			if (strpos($zone, $ip) !== false) 
 			{
-				// Remove it
-				$remove = $this->cpanel->api2_query(
+				$this->logging('Found the record you wanted to remove at line ' . $i);
+				$this->logging($zone);
+				
+				$remove = $this->cpanel->api2_query($this->config['cpanel']['account'],
 				   'ZoneEdit', 'remove_zone_record',
 					 array(
 		        'domain' => $this->config['settings']['domain'],
-		        'line' => $line,
+		        'line' => $i
 					  )
-				);
+				);//remove it
 				
-				$this->logging($remove);
-				
-			}
-		}
+			}//if $zone matches previous ip
+			
+		}//foreach $zone
 		
-	}
+	}//removeARecord function
 	
 	private function addARecord()
 	{
@@ -93,8 +101,6 @@ class DDNSUpdater
 	      'class' => 'IN',
 			  )
 		);
-		
-		$this->logging($zone);
 		
 		$this->lastSubmittedIP = $ip;
 		
