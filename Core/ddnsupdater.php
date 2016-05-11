@@ -9,7 +9,7 @@
  * @package 		DDNSUpdater
  * @author 			David Regimbal <david@regimbal.me>
  * @copyright 	2016 David Regimbal
- * @version 		0.0.1
+ * @version 		0.0.2
  * @link				http://github.com/regimbal93
  *
  */
